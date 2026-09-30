@@ -1,0 +1,64 @@
+{
+  "info": {
+    "name": "Fuel Route API",
+    "description": "Demo requests for POST /api/route/. Set the `base_url` collection variable if your server isn't on the default port.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://127.0.0.1:8000" }
+  ],
+  "item": [
+    {
+      "name": "Route — Dallas → Chicago (multi-stop)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{base_url}}/api/route/", "host": ["{{base_url}}"], "path": ["api", "route", ""] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"start\": \"Dallas, TX\",\n  \"finish\": \"Chicago, IL\"\n}"
+        },
+        "description": "~967 miles: starts full, needs a refuel; returns several cost-optimal stops."
+      }
+    },
+    {
+      "name": "Route — New York → Los Angeles (long, many stops)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{base_url}}/api/route/", "host": ["{{base_url}}"], "path": ["api", "route", ""] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"start\": \"New York, NY\",\n  \"finish\": \"Los Angeles, CA\"\n}"
+        },
+        "description": "~2,800 miles: shows multiple fuel-ups across the country — the best visual for the demo."
+      }
+    },
+    {
+      "name": "Route — Dallas → Austin (short, no stop)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{base_url}}/api/route/", "host": ["{{base_url}}"], "path": ["api", "route", ""] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"start\": \"Dallas, TX\",\n  \"finish\": \"Austin, TX\"\n}"
+        },
+        "description": "~195 miles: within one tank, so no fuel stop is required (fuel_stops is empty)."
+      }
+    },
+    {
+      "name": "Error — missing finish (400)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{base_url}}/api/route/", "host": ["{{base_url}}"], "path": ["api", "route", ""] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"start\": \"Dallas, TX\"\n}"
+        },
+        "description": "Demonstrates input validation: a missing field returns 400 before any external call."
+      }
+    }
+  ]
+}

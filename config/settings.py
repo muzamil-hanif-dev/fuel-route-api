@@ -35,7 +35,11 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-dev-only-change-me'
 # Env values are always text, so we compare the string to 'True'.
 DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = []
+# Hosts/domains this site can serve. Comma-separated in .env; 'testserver' is the
+# host Django's test client uses, so keeping it here lets our tests run.
+ALLOWED_HOSTS = os.getenv(
+    'DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,testserver'
+).split(',')
 
 
 # Application definition
@@ -152,3 +156,16 @@ VEHICLE_MPG = float(os.getenv('VEHICLE_MPG', '10'))
 
 # How close (miles) a station must be to the route to count as a candidate stop.
 ROUTE_BUFFER_MILES = float(os.getenv('ROUTE_BUFFER_MILES', '10'))
+
+
+# Logging: show our app's INFO messages (e.g. "Warmed station cache") in the console.
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {'class': 'logging.StreamHandler'},
+    },
+    'loggers': {
+        'routing': {'handlers': ['console'], 'level': 'INFO'},
+    },
+}
